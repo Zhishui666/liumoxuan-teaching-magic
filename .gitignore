@@ -1,0 +1,15 @@
+.DS_Store
+node_modules/
+dist/
+build/
+.env
+.env.*
+!.env.example
+*.log
+*.tmp
+tmp/
+output/
+outputs/
+*.pdf
+*.docx
+*.pptx
