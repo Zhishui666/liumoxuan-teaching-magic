@@ -8,8 +8,8 @@ build/
 *.log
 *.tmp
 tmp/
-output/
-outputs/
+/output/
+/outputs/
 *.pdf
 *.docx
 *.pptx
