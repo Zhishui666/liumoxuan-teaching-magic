@@ -13,6 +13,8 @@
 - 题目：备一次，用在十个地方
 - 核心产物：一备多用适配器
 
+语音输入接入已规划为 v1 增强方案，当前不阻塞 Markdown + Prompt 的第一阶段闭环；云端 ASR 选型已切换为火山引擎豆包流式语音识别。
+
 ## 第一阶段目标
 
 1. 建立“核心内容输入”的结构标准。
@@ -25,6 +27,7 @@
 
 ```text
 .
+├── .env.example
 ├── README.md
 ├── README-设计哲学.md
 ├── assets/
@@ -32,12 +35,16 @@
 ├── docs/
 │   ├── 00-项目简报.md
 │   ├── 01-MVP需求.md
-│   └── 02-版本适配矩阵.md
+│   ├── 02-版本适配矩阵.md
+│   └── 03-火山引擎豆包语音识别接入方案.md
 ├── examples/
 │   ├── input/
 │   └── output/
 ├── prompts/
 │   └── 一备多用适配器-v0.md
+├── scripts/
+│   ├── check_volcengine_asr_config.py
+│   └── volcengine_streaming_asr_mvp.py
 └── src/
     └── README.md
 ```
@@ -45,3 +52,44 @@
 ## 当前状态
 
 本仓库已完成项目立项骨架。下一步优先做一份真实核心教学内容样例，验证“一份输入 -> 多份版本输出”的质量稳定性。
+语音输入方向可按 `docs/03-火山引擎豆包语音识别接入方案.md` 另行验证。
+
+## 语音识别 MVP
+
+准备环境：
+
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+还需要本机可用 `ffmpeg`。macOS 可用：
+
+```bash
+brew install ffmpeg
+```
+
+复制配置模板并填入火山引擎 API Key：
+
+```bash
+cp .env.example .env
+```
+
+检查配置：
+
+```bash
+python3 scripts/check_volcengine_asr_config.py
+```
+
+生成一段本地中文测试音频并调用火山引擎豆包流式 ASR：
+
+```bash
+python3 scripts/volcengine_streaming_asr_mvp.py --make-sample
+```
+
+转写自己的音频：
+
+```bash
+python3 scripts/volcengine_streaming_asr_mvp.py --audio path/to/audio.wav
+```
+
+输出会保存到 `outputs/asr/`。
